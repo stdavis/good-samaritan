@@ -20,6 +20,7 @@
     "eslint-config-agrc": "1.3.0",
     "eslint-plugin-html": "6.0.0",
     "mocha": "^5",
+    "npm-watch": "0.6.0",
     "nyc": "^13"
   },
   "engines": {
@@ -40,7 +41,12 @@
   },
   "repository": "stdavis/good-samaritan",
   "scripts": {
+    "testrun": "./bin/run",
     "posttest": "eslint .",
-    "test": "nyc mocha --forbid-only \"test/**/*.test.js\""
+    "test": "nyc mocha --forbid-only \"test/**/*.test.js\"",
+    "watch": "npm-watch"
+  },
+  "watch": {
+    "testrun": "src/*.js"
   }
 }
