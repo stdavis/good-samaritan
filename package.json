@@ -11,6 +11,7 @@
     "@oclif/command": "^1",
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^2",
+    "package-json": "6.5.0",
     "read-pkg": "5.2.0"
   },
   "devDependencies": {
