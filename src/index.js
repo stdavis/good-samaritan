@@ -7,9 +7,9 @@ class GoodSamaritanCommand extends Command {
   }
 }
 
-GoodSamaritanCommand.description = `Describe the command here
+GoodSamaritanCommand.description = `Find open issues from open source dependencies of your project.
 ...
-Extra documentation goes here
+Only issues that are marked as help wanted are shown by default.
 `;
 
 GoodSamaritanCommand.flags = {
