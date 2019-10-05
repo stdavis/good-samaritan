@@ -1,3 +1,6 @@
 {
-  "extends": "oclif"
+  "extends": "agrc",
+  "rules": {
+    "indent": ["error", 2]
+  }
 }
