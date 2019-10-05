@@ -1,0 +1,44 @@
+{
+  "name": "good-samaritan",
+  "description": "Find open issues from open source dependencies of your project.",
+  "version": "0.0.0",
+  "author": "Scott Davis @stdavis",
+  "bin": {
+    "good-samaritan": "./bin/run"
+  },
+  "bugs": "https://github.com/stdavis/good-samaritan/issues",
+  "dependencies": {
+    "@oclif/command": "^1",
+    "@oclif/config": "^1",
+    "@oclif/plugin-help": "^2"
+  },
+  "devDependencies": {
+    "@oclif/test": "^1",
+    "chai": "^4",
+    "eslint": "^5.13",
+    "eslint-config-oclif": "^3.1",
+    "mocha": "^5",
+    "nyc": "^13"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "files": [
+    "/bin",
+    "/src"
+  ],
+  "homepage": "https://github.com/stdavis/good-samaritan",
+  "keywords": [
+    "oclif"
+  ],
+  "license": "MIT",
+  "main": "src/index.js",
+  "oclif": {
+    "bin": "good-samaritan"
+  },
+  "repository": "stdavis/good-samaritan",
+  "scripts": {
+    "posttest": "eslint .",
+    "test": "nyc mocha --forbid-only \"test/**/*.test.js\""
+  }
+}
