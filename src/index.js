@@ -1,6 +1,8 @@
 const { Command, flags } = require('@oclif/command');
 const readPackage = require('read-pkg');
 const packageInfo = require('package-json');
+const parseGitHubUrl = require('parse-github-url');
+const Octokit = require('@octokit/rest');
 
 
 class GoodSamaritanCommand extends Command {
@@ -12,6 +14,18 @@ class GoodSamaritanCommand extends Command {
       ...packageJson.devDependencies
     };
 
+    const isHelpWantedLabel = label => {
+      return /help.wanted/.test(label.name.toLowerCase());
+    };
+    const processIssue = issue => {
+      if (issue.labels.length && issue.labels.some(isHelpWantedLabel)) {
+        this.log(`${issue.title} (${issue.labels.map(lbl => lbl.name).join(',')})`);
+        this.log(issue.url);
+      }
+    };
+    const octokit = new Octokit({
+      auth: '21c7735d5b8394159f707ab1357058f60a43e2e9'
+    });
     for (const packageName in allDependencies) {
       if (allDependencies.hasOwnProperty(packageName)) {
         this.log(packageName);
@@ -19,7 +33,19 @@ class GoodSamaritanCommand extends Command {
           version: allDependencies[packageName],
           fullMetadata: true
         });
-        this.log(info.bugs);
+
+        const { owner, name } = parseGitHubUrl(info.repository.url);
+        const issues = await octokit.issues.listForRepo({
+          owner,
+          repo: name,
+          state: 'open',
+          updated: 'updated',
+          direction: 'desc'
+        });
+
+        issues.data.forEach(processIssue);
+
+        this.log('');
       }
     }
   }
