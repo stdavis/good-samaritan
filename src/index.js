@@ -1,9 +1,12 @@
 const { Command, flags } = require('@oclif/command');
+const readPackage = require('read-pkg');
 
 class GoodSamaritanCommand extends Command {
   async run() {
-    const name = flags.name || 'world';
-    this.log(`hello ${name} from ./src/index.js`);
+    const packageJson = await readPackage();
+
+    this.log(`Dependencies: ${Object.keys(packageJson.dependencies)}`);
+    this.log(`Dev Dependencies: ${Object.keys(packageJson.devDependencies)}`);
   }
 }
 

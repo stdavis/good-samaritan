@@ -10,7 +10,8 @@
   "dependencies": {
     "@oclif/command": "^1",
     "@oclif/config": "^1",
-    "@oclif/plugin-help": "^2"
+    "@oclif/plugin-help": "^2",
+    "read-pkg": "5.2.0"
   },
   "devDependencies": {
     "@oclif/test": "^1",
