@@ -3,10 +3,45 @@ const readPackage = require('read-pkg');
 const packageInfo = require('package-json');
 const parseGitHubUrl = require('parse-github-url');
 const Octokit = require('@octokit/rest');
+const { oauthLoginUrl } = require('@octokit/oauth-login-url');
+const { cli } = require('cli-ux');
+const { createServer } = require('http');
+const stoppable = require('stoppable');
 
 
+const OAUTH_CLIENT_ID = '98364a543e873178bcaa';
 class GoodSamaritanCommand extends Command {
   async run() {
+    cli.action.start('Please login to the site opening in your browser with your GitHub credentials');
+
+    const token = await new Promise((resolve) => {
+      const server = stoppable(createServer((request, response) => {
+        response.setHeader('Access-Control-Allow-Origin', '*');
+        response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+        response.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+        let body = '';
+        request.on('data', (chunk) => {
+          body += chunk.toString();
+        });
+        request.on('end', () => {
+          resolve(JSON.parse(body).token);
+          cli.action.stop('login successful');
+
+          response.end();
+          server.stop();
+        });
+      }));
+
+      server.listen(0, () => {
+        const { url } = oauthLoginUrl({
+          clientId: OAUTH_CLIENT_ID,
+          state: server.address().port
+        });
+        cli.open(url);
+      });
+    });
+
     const packageJson = await readPackage();
 
     const allDependencies = {
@@ -24,7 +59,7 @@ class GoodSamaritanCommand extends Command {
       }
     };
     const octokit = new Octokit({
-      auth: '21c7735d5b8394159f707ab1357058f60a43e2e9'
+      auth: token
     });
     for (const packageName in allDependencies) {
       if (allDependencies.hasOwnProperty(packageName)) {

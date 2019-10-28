@@ -11,10 +11,13 @@
     "@oclif/command": "^1",
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^2",
+    "@octokit/oauth-login-url": "2.1.2",
     "@octokit/rest": "16.31.0",
+    "cli-ux": "5.3.3",
     "package-json": "6.5.0",
     "parse-github-url": "1.0.2",
-    "read-pkg": "5.2.0"
+    "read-pkg": "5.2.0",
+    "stoppable": "1.1.0"
   },
   "devDependencies": {
     "@oclif/test": "^1",
