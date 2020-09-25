@@ -44,7 +44,7 @@ const authenticate = async () => {
       if (response.access_token) {
         cli.action.stop();
 
-        return response.access_token
+        return response.access_token;
       }
 
       return false;
@@ -89,7 +89,7 @@ const getIssues = async token => {
     auth: token
   });
   for (const packageName in allDependencies) {
-    if (allDependencies.hasOwnProperty(packageName)) {
+    if (Object.prototype.hasOwnProperty.call(allDependencies, packageName)) {
       console.log(packageName);
       const info = await packageInfo(packageName, {
         version: allDependencies[packageName],
