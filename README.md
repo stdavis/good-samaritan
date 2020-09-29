@@ -1,5 +1,4 @@
-good-samaritan
-==============
+# good-samaritan
 
 Find open issues from open source dependencies of your project.
 
@@ -8,8 +7,15 @@ Find open issues from open source dependencies of your project.
 [![Downloads/week](https://img.shields.io/npm/dw/good-samaritan.svg)](https://npmjs.org/package/good-samaritan)
 [![License](https://img.shields.io/npm/l/good-samaritan.svg)](https://github.com/stdavis/good-samaritan/blob/master/package.json)
 
-<!-- toc -->
-# Usage
-<!-- usage -->
-# Commands
-<!-- commands -->
+## Usage
+
+Run `npx good-samaritan` from the root of any project with a `package.json` file.
+
+Or, alternatively, install this project globally via: `npm install -g good-samaritan` and then run `good-samaritan`.
+
+## Development
+
+### Cutting a new release
+
+1. `npm version (major|minor|patch)`
+1. `npm publish`
