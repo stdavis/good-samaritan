@@ -115,9 +115,7 @@ const getIssues = async token => {
 
 class GoodSamaritanCommand extends Command {
   async run() {
-    const token = await authenticate();
-
-    console.log('token', token);
+    await authenticate();
 
     getIssues();
   }
