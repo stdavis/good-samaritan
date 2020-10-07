@@ -34,16 +34,20 @@ const getIssues = async token => {
         fullMetadata: true
       });
 
-      const { owner, name } = parseGitHubUrl(info.repository.url);
-      const issues = await octokit.issues.listForRepo({
-        owner,
-        repo: name,
-        state: 'open',
-        updated: 'updated',
-        direction: 'desc'
-      });
+      if (info.repository && info.repository.url) {
+        const { owner, name } = parseGitHubUrl(info.repository.url);
+        const issues = await octokit.issues.listForRepo({
+          owner,
+          repo: name,
+          state: 'open',
+          updated: 'updated',
+          direction: 'desc'
+        });
 
-      issues.data.forEach(processIssue);
+        issues.data.forEach(processIssue);
+      } else {
+        console.log('no repository url found');
+      }
 
       console.log('');
     }
