@@ -20,7 +20,7 @@ const getIssues = async token => {
   const processIssue = issue => {
     if (issue.labels.length && issue.labels.some(isHelpWantedLabel)) {
       console.log(`${issue.title} (${issue.labels.map(lbl => lbl.name).join(',')})`);
-      console.log(issue.url);
+      console.log(issue.html_url);
     }
   };
   const octokit = new Octokit({
