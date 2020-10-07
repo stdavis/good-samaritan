@@ -22,7 +22,8 @@
     "@oclif/test": "^1.2.7",
     "chai": "^4",
     "eslint": "^7.9.0",
-    "jest": "^26.4.2"
+    "jest": "^26.4.2",
+    "standard-version": "^9.0.0"
   },
   "engines": {
     "node": ">=10.0.0"
@@ -44,7 +45,8 @@
   "scripts": {
     "testrun": "./bin/run",
     "posttest": "eslint .",
-    "test": "jest --watch --coverage"
+    "test": "jest --watch --coverage",
+    "release": "standard-version"
   },
   "watch": {
     "testrun": "src/*.js"

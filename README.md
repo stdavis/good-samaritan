@@ -17,5 +17,5 @@ Or, alternatively, install this project globally via: `npm install -g good-samar
 
 ### Cutting a new release
 
-1. `npm version (major|minor|patch)`
+1. `npm run release`
 1. `npm publish`
