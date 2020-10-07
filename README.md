@@ -1,6 +1,6 @@
 # good-samaritan
 
-Find open issues from open source dependencies of your project.
+Find open issues in open source dependencies of your NodeJS project that you can help with.
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/good-samaritan.svg)](https://npmjs.org/package/good-samaritan)
