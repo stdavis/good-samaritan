@@ -23,6 +23,7 @@
     "chai": "^4",
     "eslint": "^7.9.0",
     "jest": "^26.4.2",
+    "msw": "^0.21.2",
     "standard-version": "^9.0.0"
   },
   "engines": {

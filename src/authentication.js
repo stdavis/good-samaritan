@@ -8,7 +8,7 @@ const jsonHeaders = {
   Accept: 'application/json'
 };
 const OAUTH_CLIENT_ID = '98364a543e873178bcaa';
-const tokenFilePath = `${__dirname}/.token`;
+const TOKEN_FILE_PATH = `${__dirname}/.token`;
 const encoding = 'utf8';
 
 const authenticate = async () => {
@@ -23,7 +23,11 @@ const authenticate = async () => {
   const { device_code, user_code, verification_uri, interval } = await codeResponse.json();
 
   cli.action.start(`Please paste this device code into the site opening in your default browser: "${user_code}"`);
-  cli.open(verification_uri);
+
+  // skip this in tests, couldn't figure out how to mock the open function
+  if (verification_uri) {
+    cli.open(verification_uri);
+  }
 
   const hasVerified = async () => {
     const verifiedResponse = await fetch('https://github.com/login/oauth/access_token', {
@@ -47,8 +51,6 @@ const authenticate = async () => {
 
       return false;
     } catch (error) {
-      console.log(error, verifiedResponse);
-
       return false;
     }
   };
