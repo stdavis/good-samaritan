@@ -1,7 +1,7 @@
 {
   "name": "good-samaritan",
   "description": "Find open issues from open source dependencies of your project.",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "author": "Scott Davis <stdavis@utah.gov>",
   "bin": {
     "good-samaritan": "./bin/run"
