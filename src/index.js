@@ -57,7 +57,9 @@ const getIssues = async token => {
 
 class GoodSamaritanCommand extends Command {
   async run() {
-    const token = await getToken();
+    const { flags } = this.parse(GoodSamaritanCommand);
+
+    const token = await getToken(flags['reset-token']);
 
     getIssues(token);
   }
@@ -69,10 +71,12 @@ Only issues that are marked as help wanted are shown by default.
 `;
 
 GoodSamaritanCommand.flags = {
-  // add --version flag to show CLI version
   version: flags.version({ char: 'v' }),
-  // add --help flag to show CLI version
-  help: flags.help({ char: 'h' })
+  help: flags.help({ char: 'h' }),
+  'reset-token': flags.boolean({
+    char: 'r',
+    description: 'reset your GitHub authentication token'
+  })
 };
 
 module.exports = GoodSamaritanCommand;

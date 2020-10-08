@@ -76,24 +76,29 @@ const doesCachedTokenFileExist = (path) => {
   }
 };
 
-const cacheToken = (token, path) => {
+const writeToken = (token, path) => {
   fs.writeFileSync(path, token, encoding);
 };
 
 const getCachedToken = (path) => {
   const token = fs.readFileSync(path, { encoding: encoding });
 
-  return token;
+  return token.trim();
 };
 
-const getToken = async () => {
+const getToken = async (resetToken, tokenFilePath=TOKEN_FILE_PATH) => {
   if (doesCachedTokenFileExist(tokenFilePath)) {
-    return getCachedToken(tokenFilePath);
+    if (resetToken) {
+      writeToken('', tokenFilePath);
+      console.log('GitHub token has been cleared.');
+    } else {
+      return getCachedToken(tokenFilePath);
+    }
   }
 
   const token = await authenticate();
 
-  cacheToken(token, tokenFilePath);
+  writeToken(token, tokenFilePath);
 
   return token;
 };
