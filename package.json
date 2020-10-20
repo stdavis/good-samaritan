@@ -46,7 +46,7 @@
   "scripts": {
     "testrun": "./bin/run",
     "posttest": "eslint .",
-    "test": "jest --watch --coverage",
+    "test": "jest --watchAll --coverage",
     "release": "standard-version"
   },
   "watch": {
