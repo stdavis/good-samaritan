@@ -44,7 +44,6 @@
   },
   "repository": "stdavis/good-samaritan",
   "scripts": {
-    "testrun": "./bin/run",
     "posttest": "eslint .",
     "test": "jest --watchAll --coverage",
     "release": "standard-version"

@@ -16,6 +16,12 @@ Or, alternatively, install this project globally via: `npm install -g good-samar
 
 ## Development
 
+### Local installation
+
+`npm link`
+
+Then you should be able to run `good-samaritan` anywhere.
+
 ### Cutting a new release
 
 1. `npm run release`
