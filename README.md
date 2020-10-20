@@ -22,6 +22,12 @@ Or, alternatively, install this project globally via: `npm install -g good-samar
 
 Then you should be able to run `good-samaritan` anywhere.
 
+### Debugging in VSCode
+
+1. Set a breakpoint in the editor.
+1. Run `Debug: Create JavaScript Debug Terminal`
+1. Run `good-samaritan` in the new terminal.
+
 ### Cutting a new release
 
 1. `npm run release`
