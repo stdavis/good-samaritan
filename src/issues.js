@@ -3,6 +3,9 @@ const parseGitHubUrl = require('parse-github-url');
 const { getRepoUrl } = require('./packages');
 
 const getIssues = async (dependencies, token) => {
+  /*
+    dependencies: { dep: <version string>, dep2: <version string> }
+  */
   const octokit = new Octokit({
     auth: token
   });
@@ -34,6 +37,9 @@ const getIssues = async (dependencies, token) => {
 };
 
 const processIssues = (issues) => {
+  /*
+    issues: { dep: Issue[], dep2: Issue[] }
+  */
   const isHelpWantedLabel = label => {
     return /help.wanted/.test(label.name.toLowerCase());
   };
