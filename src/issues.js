@@ -2,6 +2,7 @@ const { Octokit } = require('@octokit/rest');
 const parseGitHubUrl = require('parse-github-url');
 const { getRepoUrl } = require('./packages');
 const cliProgress = require('cli-progress');
+const debug = require('debug')('good-samaritan');
 
 const getIssues = async (dependencies, token) => {
   /*
@@ -37,7 +38,7 @@ const getIssues = async (dependencies, token) => {
 
         issues[packageName] = issueList.data;
       } else {
-        console.log('no repository url found');
+        debug(`no repository url found for: ${packageName}`);
       }
     }
   }
