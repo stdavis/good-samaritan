@@ -1,6 +1,7 @@
 const { Octokit } = require('@octokit/rest');
 const parseGitHubUrl = require('parse-github-url');
 const { getRepoUrl } = require('./packages');
+const cliProgress = require('cli-progress');
 
 const getIssues = async (dependencies, token) => {
   /*
@@ -10,10 +11,18 @@ const getIssues = async (dependencies, token) => {
     auth: token
   });
 
+  console.log('gathering issues from packages...');
+  const progressBar = new cliProgress.SingleBar({
+    format: '{bar} {percentage}% | ETA: {eta}s | Package: {packageName} ',
+    stopOnComplete: true,
+    clearOnComplete: true
+  }, cliProgress.Presets.rect);
+  progressBar.start(Object.keys(dependencies).length, 0);
+
   const issues = {};
   for (const packageName in dependencies) {
     if (Object.prototype.hasOwnProperty.call(dependencies, packageName)) {
-      console.log(packageName);
+      progressBar.increment({ packageName });
       const repoUrl = await getRepoUrl(packageName, dependencies[packageName]);
 
       if (repoUrl) {
