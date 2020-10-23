@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/stdavis/good-samaritan/compare/v1.2.0...v1.3.0) (2020-10-23)
+
+
+### Features
+
+* add progress bar for gathering issues process ([c00fbe5](https://github.com/stdavis/good-samaritan/commit/c00fbe50554427d32078da21b188e15055cfd535))
+
+
+### Bug Fixes
+
+* better issue list formatting ([9ac4245](https://github.com/stdavis/good-samaritan/commit/9ac4245d107e23deb03e559ddb3e2b4e5646db76))
+* fix coverage settings ([530d3f6](https://github.com/stdavis/good-samaritan/commit/530d3f6489d65077ed136ea48db79e8b1b6ad6d1))
+* leave progress bar and better message ([501903b](https://github.com/stdavis/good-samaritan/commit/501903bfb55b9f16dbb12ebcf877497884e55852))
+* move log to debug statement ([c321a08](https://github.com/stdavis/good-samaritan/commit/c321a082c50e134e55504e1c411c7b657c11c43b))
+* use pagination to get all issues and optimize search ([61cf89f](https://github.com/stdavis/good-samaritan/commit/61cf89fa7c52fd0c2e2f0800f2499030dea24772))
+
 ## [1.2.0](https://github.com/stdavis/good-samaritan/compare/v1.1.0...v1.2.0) (2020-10-08)
 
 
