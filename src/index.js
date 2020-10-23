@@ -18,8 +18,10 @@ class GoodSamaritanCommand extends Command {
   }
 }
 
-GoodSamaritanCommand.description = `Find open issues from open source dependencies of your project.
+GoodSamaritanCommand.description = `Help make the world a better place by finding issues in open source dependencies of your NodeJS project that you can help with.
 Only issues that are labeled as "help wanted" are shown by default.
+
+https://github.com/stdavis/good-samaritan
 `;
 
 GoodSamaritanCommand.flags = {

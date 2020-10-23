@@ -1,12 +1,16 @@
 # good-samaritan
 
-Find open issues in open source dependencies of your NodeJS project that you can help with.
-
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/good-samaritan.svg)](https://npmjs.org/package/good-samaritan)
 [![Downloads/week](https://img.shields.io/npm/dw/good-samaritan.svg)](https://npmjs.org/package/good-samaritan)
 [![License](https://img.shields.io/npm/l/good-samaritan.svg)](https://github.com/stdavis/good-samaritan/blob/master/package.json)
 [![Coverage Status](https://coveralls.io/repos/github/stdavis/good-samaritan/badge.svg?branch=master)](https://coveralls.io/github/stdavis/good-samaritan?branch=master)
+
+Help make the world a better place by finding issues in open source dependencies of your NodeJS project that you can help with.
+
+Requires a GitHub account for rate limits only ([no scopes are requested](src/authentication.js)).
+
+Only issues that are labeled as "help wanted" are shown by default.
 
 ## Usage
 
