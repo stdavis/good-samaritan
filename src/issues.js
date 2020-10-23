@@ -3,6 +3,7 @@ const parseGitHubUrl = require('parse-github-url');
 const { getRepoUrl } = require('./packages');
 const cliProgress = require('cli-progress');
 const debug = require('debug')('good-samaritan');
+const chalk = require('chalk');
 
 const getIssues = async (dependencies, token) => {
   /*
@@ -49,20 +50,22 @@ const getIssues = async (dependencies, token) => {
   return packageIssues;
 };
 
-const processIssues = (issues) => {
+const processIssues = (packageIssues) => {
   /*
-    issues: { dep: Issue[], dep2: Issue[] }
+    packageIssues: { dep: Issue[], dep2: Issue[] }
   */
-  for (const packageName in issues) {
-    if (Object.prototype.hasOwnProperty.call(issues, packageName)) {
+  for (const packageName in packageIssues) {
+    if (Object.prototype.hasOwnProperty.call(packageIssues, packageName)) {
+      const issues = packageIssues[packageName];
       if (issues.length === 0) {
         return;
       }
-      console.log(`${packageName}:`);
 
-      issues[packageName].forEach(issue => {
-        console.log(`${issue.title} (${issue.labels.map(lbl => lbl.name).join(',')})`);
-        console.log(issue.html_url);
+      console.log(chalk.green.bold(`\n${packageName} (${issues.length} issues found):`));
+
+      issues.forEach((issue) => {
+        console.log(chalk.cyan(`${issue.title} (${issue.labels.map(lbl => lbl.name).join(',')})`));
+        console.log(chalk.italic.underline.dim(issue.html_url));
       });
     }
   }
