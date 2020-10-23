@@ -20,7 +20,7 @@ const getIssues = async (dependencies, token) => {
   }, cliProgress.Presets.rect);
   progressBar.start(Object.keys(dependencies).length, 0);
 
-  const issues = {};
+  const packageIssues = {};
   for (const packageName in dependencies) {
     if (Object.prototype.hasOwnProperty.call(dependencies, packageName)) {
       progressBar.increment({ packageName });
@@ -28,41 +28,41 @@ const getIssues = async (dependencies, token) => {
 
       if (repoUrl) {
         const { owner, name } = parseGitHubUrl(repoUrl);
-        const issueList = await octokit.issues.listForRepo({
+        const issues = await octokit.paginate(octokit.issues.listForRepo, {
           owner,
           repo: name,
           state: 'open',
           updated: 'updated',
-          direction: 'desc'
+          direction: 'desc',
+          labels: 'help wanted'
         });
 
-        issues[packageName] = issueList.data;
+        if (issues.length > 0) {
+          packageIssues[packageName] = issues;
+        }
       } else {
         debug(`no repository url found for: ${packageName}`);
       }
     }
   }
 
-  return issues;
+  return packageIssues;
 };
 
 const processIssues = (issues) => {
   /*
     issues: { dep: Issue[], dep2: Issue[] }
   */
-  const isHelpWantedLabel = label => {
-    return /help.wanted/.test(label.name.toLowerCase());
-  };
-
   for (const packageName in issues) {
     if (Object.prototype.hasOwnProperty.call(issues, packageName)) {
+      if (issues.length === 0) {
+        return;
+      }
       console.log(`${packageName}:`);
 
       issues[packageName].forEach(issue => {
-        if (issue.labels.length && issue.labels.some(isHelpWantedLabel)) {
-          console.log(`${issue.title} (${issue.labels.map(lbl => lbl.name).join(',')})`);
-          console.log(issue.html_url);
-        }
+        console.log(`${issue.title} (${issue.labels.map(lbl => lbl.name).join(',')})`);
+        console.log(issue.html_url);
       });
     }
   }

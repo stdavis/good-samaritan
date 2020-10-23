@@ -8,10 +8,11 @@ class Octokit {
           'asdavis': ['asdavis issues']
         };
 
-        return {
-          data: issues[owner]
-        };
+        return issues[owner];
       }
+    };
+    this.paginate = (_, args) => {
+      return this.issues.listForRepo(args);
     };
   }
 }
