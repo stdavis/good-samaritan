@@ -14,16 +14,14 @@ const getIssues = async (dependencies, token) => {
 
   console.log('gathering issues from packages...');
   const progressBar = new cliProgress.SingleBar({
-    format: '{bar} {percentage}% | ETA: {eta}s | Package: {packageName} ',
-    stopOnComplete: true,
-    clearOnComplete: true
+    format: '{bar} {percentage}% | ETA: {eta}s | {message} '
   }, cliProgress.Presets.rect);
   progressBar.start(Object.keys(dependencies).length, 0);
 
   const packageIssues = {};
   for (const packageName in dependencies) {
     if (Object.prototype.hasOwnProperty.call(dependencies, packageName)) {
-      progressBar.increment({ packageName });
+      progressBar.increment({ message: `Package: ${packageName}` });
       const repoUrl = await getRepoUrl(packageName, dependencies[packageName]);
 
       if (repoUrl) {
@@ -45,6 +43,8 @@ const getIssues = async (dependencies, token) => {
       }
     }
   }
+  progressBar.update({ message: 'done' });
+  progressBar.stop();
 
   return packageIssues;
 };
