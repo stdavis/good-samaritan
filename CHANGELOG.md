@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/stdavis/good-samaritan/compare/v1.3.0...v1.4.0) (2020-10-30)
+
+
+### Features
+
+* add labels optional parameter ([978655e](https://github.com/stdavis/good-samaritan/commit/978655e36b6f09f3e7e9fdd23c891eb6a3b23bbc))
+
 ## [1.3.0](https://github.com/stdavis/good-samaritan/compare/v1.2.0...v1.3.0) (2020-10-23)
 
 
