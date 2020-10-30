@@ -5,7 +5,7 @@ const cliProgress = require('cli-progress');
 const debug = require('debug')('good-samaritan');
 const chalk = require('chalk');
 
-const getIssues = async (dependencies, token) => {
+const getIssues = async (dependencies, token, labels) => {
   /*
     dependencies: { dep: <version string>, dep2: <version string> }
   */
@@ -33,7 +33,7 @@ const getIssues = async (dependencies, token) => {
           state: 'open',
           updated: 'updated',
           direction: 'desc',
-          labels: 'help wanted'
+          labels: labels
         });
 
         if (issues.length > 0) {

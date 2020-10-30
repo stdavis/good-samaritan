@@ -8,7 +8,7 @@ describe('issues', () => {
         'dep2': '1.2.2'
       };
 
-      const result = await getIssues(dependencies, 'blah');
+      const result = await getIssues(dependencies, 'blah', 'label');
 
       expect(result).toEqual({
         'dep2': ['asdavis issues'],
