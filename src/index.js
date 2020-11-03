@@ -18,10 +18,8 @@ class GoodSamaritanCommand extends Command {
   }
 }
 
-GoodSamaritanCommand.description = `Help make the world a better place by finding issues in open source dependencies of your NodeJS project that you can help with.
+GoodSamaritanCommand.description = `Help make the world a better place by finding GitHub issues for open source dependencies of your NodeJS project that you can help with.
 Only issues that are labeled as "help wanted" are shown by default.
-
-Labels are specified as a comma-separated list. For example: "help wanted,good first issue". Only issues that have *all* of the labels will be shown.
 
 https://github.com/stdavis/good-samaritan
 `;
@@ -35,7 +33,9 @@ GoodSamaritanCommand.flags = {
   }),
   'labels': flags.string({
     char: 'l',
-    description: 'specifies the GitHub issue label(s) that are used by good-samaritan to filter issues',
+    description: `specifies the GitHub issue label(s) that are used by good-samaritan to filter issues.
+
+Labels are specified as a comma-separated list. For example: "help wanted,good first issue". Only issues that have *all* of the labels will be shown.`,
     default: 'help wanted'
   })
 };
