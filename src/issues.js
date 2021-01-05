@@ -23,24 +23,36 @@ const getIssues = async (dependencies, token, labels) => {
   for (const packageName in dependencies) {
     if (Object.prototype.hasOwnProperty.call(dependencies, packageName)) {
       progressBar.increment({ message: `Package: ${packageName}` });
-      const repoUrl = await getRepoUrl(packageName, dependencies[packageName]);
+
+      let repoUrl;
+      const version = dependencies[packageName];
+      try {
+        repoUrl = await getRepoUrl(packageName, version);
+      } catch (error) {
+        debug(error);
+      }
 
       if (repoUrl) {
         const { owner, name } = parseGitHubUrl(repoUrl);
-        const issues = await octokit.paginate(octokit.issues.listForRepo, {
-          owner,
-          repo: name,
-          state: 'open',
-          updated: 'updated',
-          direction: 'desc',
-          labels: labels
-        });
+        let issues = [];
+        try {
+          issues = await octokit.paginate(octokit.issues.listForRepo, {
+            owner,
+            repo: name,
+            state: 'open',
+            updated: 'updated',
+            direction: 'desc',
+            labels: labels
+          });
+        } catch (error) {
+          debug(error);
+        }
 
         if (issues.length > 0) {
           packageIssues[packageName] = issues;
         }
       } else {
-        debug(`no repository url found for: ${packageName}`);
+        debug(`no repository url found for: ${packageName}@${version}`);
       }
     }
   }
