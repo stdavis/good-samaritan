@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/stdavis/good-samaritan/compare/v1.4.0...v1.5.0) (2021-01-05)
+
+
+### Features
+
+* add error handling when gathering issues ([d2d0c07](https://github.com/stdavis/good-samaritan/commit/d2d0c07442ac11f0ca92709e5cf4f27236cc608e))
+* search sub-dependencies ([f1d0397](https://github.com/stdavis/good-samaritan/commit/f1d0397ec44057a5657804777b5d4651a1fffefd))
+
 ## [1.4.0](https://github.com/stdavis/good-samaritan/compare/v1.3.0...v1.4.0) (2020-10-30)
 
 
