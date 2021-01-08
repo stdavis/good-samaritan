@@ -1,16 +1,38 @@
-const { Octokit } = require('@octokit/rest');
+const { Octokit } = require('@octokit/core');
 const parseGitHubUrl = require('parse-github-url');
 const { getRepoUrl } = require('./packages');
 const cliProgress = require('cli-progress');
 const debug = require('debug')('good-samaritan');
 const chalk = require('chalk');
+const { throttling } = require('@octokit/plugin-throttling');
+const { retry } = require('@octokit/plugin-retry');
 
 const getIssues = async (dependencies, token, labels) => {
   /*
     dependencies: { dep: <version string>, dep2: <version string> }
   */
-  const octokit = new Octokit({
-    auth: token
+  const MyOctokit = Octokit.plugin(throttling, retry);
+  const octokit = new MyOctokit({
+    auth: token,
+    throttle: {
+      onRateLimit: (retryAfter, options, octokit) => {
+        octokit.log.warn(
+          `Request quota exhausted for request ${options.method} ${options.url}`
+        );
+
+        if (options.request.retryCount === 0) {
+          // only retries once
+          octokit.log.info(`Retrying after ${retryAfter} seconds!`);
+          return true;
+        }
+      },
+      onAbuseLimit: (_, options, octokit) => {
+        // does not retry, only logs a warning
+        octokit.log.warn(
+          `Abuse detected for request ${options.method} ${options.url}`
+        );
+      }
+    }
   });
 
   console.log('gathering issues from packages...');
