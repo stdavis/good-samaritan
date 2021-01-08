@@ -17,6 +17,7 @@
     "node-fetch": "^2.6.1",
     "package-json": "6.5.0",
     "parse-github-url": "1.0.2",
+    "pretty-ms": "^7.0.1",
     "read-pkg": "5.2.0"
   },
   "devDependencies": {

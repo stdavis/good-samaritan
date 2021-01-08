@@ -2,10 +2,13 @@ const { Command, flags } = require('@oclif/command');
 const getToken = require('./authentication');
 const { getCurrentProjectDependencies } = require('./packages');
 const { getIssues, processIssues } = require('./issues');
-
+const chalk = require('chalk');
+const prettyMilliseconds = require('pretty-ms');
 
 class GoodSamaritanCommand extends Command {
   async run() {
+    const startTime = new Date();
+
     const { flags } = this.parse(GoodSamaritanCommand);
 
     const token = await getToken(flags['reset-token']);
@@ -15,6 +18,10 @@ class GoodSamaritanCommand extends Command {
     const issues = await getIssues(dependencies, token, flags['labels']);
 
     processIssues(issues);
+
+    const endTime = new Date() - startTime;
+
+    console.log(chalk.magenta(`\nTotal processing time: ${prettyMilliseconds(endTime)}`));
   }
 }
 
