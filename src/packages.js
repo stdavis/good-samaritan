@@ -2,7 +2,7 @@ const readPackage = require('read-pkg');
 const packageInfo = require('package-json');
 
 
-const getCurrentProjectDependencies = async () => {
+const getCurrentProjectDependencies = async (searchSubDeps=false) => {
   const packageJson = await readPackage();
 
   let dependencies = {
@@ -10,14 +10,16 @@ const getCurrentProjectDependencies = async () => {
     ...packageJson.devDependencies
   };
 
-  for (let packageName in dependencies) {
-    const subPackageDependencies = await getDependencies(packageName, dependencies[packageName]);
+  if (searchSubDeps) {
+    for (let packageName in dependencies) {
+      const subPackageDependencies = await getDependencies(packageName, dependencies[packageName]);
 
-    dependencies = {
-      ...subPackageDependencies,
-      // preference for root-level dependencies
-      ...dependencies
-    };
+      dependencies = {
+        ...subPackageDependencies,
+        // preference for root-level dependencies
+        ...dependencies
+      };
+    }
   }
 
   return dependencies;
@@ -31,8 +33,7 @@ const getDependencies = async (packageName, version) => {
   });
 
   return {
-    ...info.dependencies,
-    ...info.devDependencies
+    ...info.dependencies
   };
 };
 

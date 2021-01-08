@@ -10,7 +10,7 @@ class GoodSamaritanCommand extends Command {
 
     const token = await getToken(flags['reset-token']);
 
-    const dependencies = await getCurrentProjectDependencies();
+    const dependencies = await getCurrentProjectDependencies(flags['search-sub-deps']);
 
     const issues = await getIssues(dependencies, token, flags['labels']);
 
@@ -37,6 +37,12 @@ GoodSamaritanCommand.flags = {
 
 Labels are specified as a comma-separated list. For example: "help wanted,good first issue". Only issues that have *all* of the labels will be shown.`,
     default: 'help wanted'
+  }),
+  'search-sub-deps': flags.boolean({
+    char: 's',
+    description: `[default: false] search sub-dependencies (dependencies of your project's dependencies)
+Note: devDependencies of sub-dependencies are not searched.`,
+    default: false
   })
 };
 
