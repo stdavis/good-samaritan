@@ -1,7 +1,18 @@
-const { getRepoUrl, getCurrentProjectDependencies } = require('./packages');
+const { getRepoUrl, getCurrentProjectDependencies, getPackageInfo } = require('./packages');
+const packageInfo = require('package-json');
 
 
 describe('packages', () => {
+  describe('getPackageInfo', () => {
+    it('caches calls to packageInfo', async () => {
+      packageInfo.mockClear();
+      await getPackageInfo('dep1', '^1.0.1');
+      await getPackageInfo('dep1', '^1.0.1');
+
+      expect(packageInfo.mock.calls.length).toBe(1);
+    });
+  });
+
   describe('getRepoUrl', () => {
     it('returns the url', async () => {
       expect(await getRepoUrl('dep2', '1.1.1')).toBe('https://github.com/asdavis/another-good-module');

@@ -1,4 +1,4 @@
-module.exports = (packageName) => {
+module.exports = jest.fn((packageName) => {
   const packages = {
     dep1: {
       repository: {
@@ -36,4 +36,4 @@ module.exports = (packageName) => {
   };
 
   return packages[packageName];
-};
+});
