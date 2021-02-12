@@ -34,7 +34,7 @@ const getOctokitInstance = (token) => {
   });
 };
 
-const getIssues = async (dependencies, octokit, labels) => {
+const getIssues = async (dependencies, octokit, labels, maxIssues) => {
   /*
     dependencies: { dep: <version string>, dep2: <version string> }
   */
@@ -57,6 +57,7 @@ const getIssues = async (dependencies, octokit, labels) => {
       }
 
       let issues = [];
+      let maxReached = false;
       try {
         for await (const response of octokit.paginate.iterator(
           octokit.issues.listForRepo,
@@ -69,13 +70,22 @@ const getIssues = async (dependencies, octokit, labels) => {
           }
         )) {
           issues = issues.concat(response.data);
+
+          if (issues.length > maxIssues) {
+            maxReached = true;
+            issues = issues.slice(0, maxIssues);
+            break;
+          }
         }
       } catch (error) {
         debug(error);
       }
 
       if (issues.length > 0) {
-        packageIssues[packageName] = issues;
+        packageIssues[packageName] = {
+          issues,
+          moreIssues: maxReached ? `https://github.com/${repo.owner}/${repo.repo}/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3A%22help+wanted%22`: null
+        };
       }
     }
   }
@@ -108,21 +118,27 @@ const getRepoFromPackage = async (packageName, version) => {
 
 const processIssues = (packageIssues) => {
   /*
-    packageIssues: { dep: Issue[], dep2: Issue[] }
+    packageIssues: { dep: { issues: Issue[], moreIssues: string }, dep2: ... }
   */
   for (const packageName in packageIssues) {
     if (Object.prototype.hasOwnProperty.call(packageIssues, packageName)) {
-      const issues = packageIssues[packageName];
+      const { issues, moreIssues } = packageIssues[packageName];
       if (issues.length === 0) {
         return;
       }
 
-      console.log(chalk.green.bold(`\n${packageName} (${issues.length} issues found):`));
+      const numIssuesText = moreIssues ? `more than ${issues.length}` : issues.length;
+      console.log(chalk.green.bold(`\n${packageName} (${numIssuesText} issues found):`));
 
       issues.forEach((issue) => {
         console.log(chalk.cyan(`${issue.title} (${issue.labels.map(lbl => lbl.name).join(',')})`));
         console.log(chalk.italic.underline.dim(issue.html_url));
       });
+
+      if (moreIssues) {
+        console.log(chalk.yellow('Remaining issues can be found here:'));
+        console.log(chalk.italic.underline.dim(moreIssues));
+      }
     }
   }
 };

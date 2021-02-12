@@ -15,7 +15,7 @@ class GoodSamaritanCommand extends Command {
 
     const dependencies = await getCurrentProjectDependencies(flags['search-sub-deps']);
 
-    const issues = await getIssues(dependencies, getOctokitInstance(token), flags['labels']);
+    const issues = await getIssues(dependencies, getOctokitInstance(token), flags['labels'], flags['max-issues']);
 
     processIssues(issues);
 
@@ -50,6 +50,12 @@ Labels are specified as a comma-separated list. For example: "help wanted,good f
     description: `[default: false] search sub-dependencies (dependencies of your project's dependencies)
 Note: devDependencies of sub-dependencies are not searched.`,
     default: false
+  }),
+  'max-issues': flags.integer({
+    char: 'm',
+    description: `[default 10] specifies the maximum number of issues returned for each repo.
+If more than the max is found, a URL is printed that the user can use to see the rest of the issues.`,
+    default: 10
   })
 };
 

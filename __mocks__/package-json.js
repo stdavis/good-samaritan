@@ -16,6 +16,11 @@ module.exports = jest.fn((packageName) => {
         url: 'https://github.com/asdavis/another-good-module'
       }
     },
+    dep3: {
+      repository: {
+        url: 'https://github.com/stdavis/lots-of-issues'
+      }
+    },
     devDep1: {},
     devDep2: {
       repository: {},
