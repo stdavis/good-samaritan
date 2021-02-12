@@ -1,4 +1,4 @@
-const { Octokit } = require('@octokit/core');
+const { Octokit } = require('@octokit/rest');
 const parseGitHubUrl = require('parse-github-url');
 const { getRepoUrl } = require('./packages');
 const cliProgress = require('cli-progress');
@@ -7,12 +7,10 @@ const chalk = require('chalk');
 const { throttling } = require('@octokit/plugin-throttling');
 const { retry } = require('@octokit/plugin-retry');
 
-const getIssues = async (dependencies, token, labels) => {
-  /*
-    dependencies: { dep: <version string>, dep2: <version string> }
-  */
+const getOctokitInstance = (token) => {
   const MyOctokit = Octokit.plugin(throttling, retry);
-  const octokit = new MyOctokit({
+
+  return new MyOctokit({
     auth: token,
     throttle: {
       onRateLimit: (retryAfter, options, octokit) => {
@@ -34,7 +32,12 @@ const getIssues = async (dependencies, token, labels) => {
       }
     }
   });
+};
 
+const getIssues = async (dependencies, octokit, labels) => {
+  /*
+    dependencies: { dep: <version string>, dep2: <version string> }
+  */
   console.log('gathering issues from packages...');
   const progressBar = new cliProgress.SingleBar({
     format: '{bar} {percentage}% | ETA: {eta}s | {message} '
@@ -46,35 +49,33 @@ const getIssues = async (dependencies, token, labels) => {
     if (Object.prototype.hasOwnProperty.call(dependencies, packageName)) {
       progressBar.increment({ message: `Package: ${packageName}` });
 
-      let repoUrl;
-      const version = dependencies[packageName];
+      let repo;
       try {
-        repoUrl = await getRepoUrl(packageName, version);
-      } catch (error) {
-        debug(error);
+        repo = await getRepoFromPackage(packageName, dependencies[packageName]);
+      } catch {
+        continue;
       }
 
-      if (repoUrl) {
-        const { owner, name } = parseGitHubUrl(repoUrl);
-        let issues = [];
-        try {
-          issues = await octokit.paginate(octokit.issues.listForRepo, {
-            owner,
-            repo: name,
+      let issues = [];
+      try {
+        for await (const response of octokit.paginate.iterator(
+          octokit.issues.listForRepo,
+          {
+            ...repo,
             state: 'open',
             updated: 'updated',
             direction: 'desc',
             labels: labels
-          });
-        } catch (error) {
-          debug(error);
+          }
+        )) {
+          issues = issues.concat(response.data);
         }
+      } catch (error) {
+        debug(error);
+      }
 
-        if (issues.length > 0) {
-          packageIssues[packageName] = issues;
-        }
-      } else {
-        debug(`no repository url found for: ${packageName}@${version}`);
+      if (issues.length > 0) {
+        packageIssues[packageName] = issues;
       }
     }
   }
@@ -82,6 +83,27 @@ const getIssues = async (dependencies, token, labels) => {
   progressBar.stop();
 
   return packageIssues;
+};
+
+const getRepoFromPackage = async (packageName, version) => {
+  let repoUrl;
+  const error = new Error(`error getting repo from package ${packageName}: ${version}`);
+
+  try {
+    repoUrl = await getRepoUrl(packageName, version);
+  } catch (getRepoError) {
+    debug(getRepoError);
+
+    throw error;
+  }
+
+  if (repoUrl) {
+    const { owner, name } = parseGitHubUrl(repoUrl);
+
+    return { owner, repo: name };
+  }
+
+  throw error;
 };
 
 const processIssues = (packageIssues) => {
@@ -108,5 +130,6 @@ const processIssues = (packageIssues) => {
 
 module.exports = {
   getIssues,
-  processIssues
+  processIssues,
+  getOctokitInstance
 };

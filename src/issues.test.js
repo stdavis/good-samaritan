@@ -1,14 +1,28 @@
-const { getIssues, processIssues } = require("./issues");
+const { getIssues, processIssues, getOctokitInstance } = require("./issues");
 
 describe('issues', () => {
   describe('getIssues', () => {
     it('collects issues', async () => {
+      const octokit = getOctokitInstance();
+      const mockIssues = {
+        'a-good-module': ['stdavis issues'],
+        'another-good-module': ['asdavis issues']
+      };
+      octokit.issues.listForRepo = jest.fn(({ repo }) => {
+        return {
+          data: mockIssues[repo]
+        };
+      });
+      octokit.paginate.iterator = async function*(listFunction, args) {
+        yield listFunction(args);
+      };
+
       const dependencies = {
         'dep1': '1.1.1',
         'dep2': '1.2.2'
       };
 
-      const result = await getIssues(dependencies, 'blah', 'label');
+      const result = await getIssues(dependencies, octokit, 'label');
 
       expect(result).toEqual({
         'dep2': ['asdavis issues'],

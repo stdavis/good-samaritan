@@ -1,7 +1,7 @@
 const { Command, flags } = require('@oclif/command');
 const getToken = require('./authentication');
 const { getCurrentProjectDependencies } = require('./packages');
-const { getIssues, processIssues } = require('./issues');
+const { getOctokitInstance, getIssues, processIssues } = require('./issues');
 const chalk = require('chalk');
 const prettyMilliseconds = require('pretty-ms');
 
@@ -15,7 +15,7 @@ class GoodSamaritanCommand extends Command {
 
     const dependencies = await getCurrentProjectDependencies(flags['search-sub-deps']);
 
-    const issues = await getIssues(dependencies, token, flags['labels']);
+    const issues = await getIssues(dependencies, getOctokitInstance(token), flags['labels']);
 
     processIssues(issues);
 
