@@ -36,28 +36,27 @@ GoodSamaritanCommand.flags = {
   help: flags.help({ char: 'h' }),
   'reset-token': flags.boolean({
     char: 'r',
-    description: 'reset your GitHub authentication token'
+    description: 'reset your GitHub authentication token',
   }),
-  'labels': flags.string({
+  labels: flags.string({
     char: 'l',
     description: `specifies the GitHub issue label(s) that are used by good-samaritan to filter issues.
 
 Labels are specified as a comma-separated list. For example: "help wanted,good first issue". Only issues that have *all* of the labels will be shown.`,
-    default: 'help wanted'
+    default: 'help wanted',
   }),
   'search-sub-deps': flags.boolean({
     char: 's',
     description: `[default: false] search sub-dependencies (dependencies of your project's dependencies)
 Note: devDependencies of sub-dependencies are not searched.`,
-    default: false
+    default: false,
   }),
   'max-issues': flags.integer({
     char: 'm',
     description: `[default 10] specifies the maximum number of issues returned for each repo.
 If more than the max is found, a URL is printed that the user can use to see the rest of the issues.`,
-    default: 10
-  })
+    default: 10,
+  }),
 };
-
 
 module.exports = GoodSamaritanCommand;

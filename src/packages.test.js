@@ -1,7 +1,6 @@
 const { getRepoUrl, getCurrentProjectDependencies, getPackageInfo } = require('./packages');
 const packageInfo = require('package-json');
 
-
 describe('packages', () => {
   describe('getPackageInfo', () => {
     it('caches calls to packageInfo', async () => {
@@ -29,7 +28,7 @@ describe('packages', () => {
         dep1: '^1.0.1',
         dep2: '1.0.2',
         devDep1: '^5.0.0',
-        devDep2: '3.0.0'
+        devDep2: '3.0.0',
       };
 
       expect(await getCurrentProjectDependencies()).toEqual(expected);
@@ -41,7 +40,7 @@ describe('packages', () => {
         devDep1: '^5.0.0',
         devDep2: '3.0.0',
         subDep: '1.1.1',
-        subDep2: '2.2.2'
+        subDep2: '2.2.2',
       };
 
       expect(await getCurrentProjectDependencies(true)).toEqual(expected);

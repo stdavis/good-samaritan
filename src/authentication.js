@@ -2,10 +2,9 @@ const fetch = require('node-fetch');
 const { cli } = require('cli-ux');
 const fs = require('fs');
 
-
 const jsonHeaders = {
   'Content-Type': 'application/json',
-  Accept: 'application/json'
+  Accept: 'application/json',
 };
 const OAUTH_CLIENT_ID = '98364a543e873178bcaa';
 const TOKEN_FILE_PATH = `${__dirname}/.token`;
@@ -16,9 +15,9 @@ const authenticate = async () => {
     method: 'POST',
     body: JSON.stringify({
       client_id: OAUTH_CLIENT_ID,
-      scope: null
+      scope: null,
     }),
-    headers: jsonHeaders
+    headers: jsonHeaders,
   });
   const { device_code, user_code, verification_uri, interval } = await codeResponse.json();
 
@@ -35,9 +34,9 @@ const authenticate = async () => {
       body: JSON.stringify({
         client_id: OAUTH_CLIENT_ID,
         device_code,
-        grant_type: 'urn:ietf:params:oauth:grant-type:device_code'
+        grant_type: 'urn:ietf:params:oauth:grant-type:device_code',
       }),
-      headers: jsonHeaders
+      headers: jsonHeaders,
     });
 
     try {
@@ -88,7 +87,7 @@ const getCachedToken = (path) => {
   return token.trim();
 };
 
-const getToken = async (resetToken, tokenFilePath=TOKEN_FILE_PATH) => {
+const getToken = async (resetToken, tokenFilePath = TOKEN_FILE_PATH) => {
   if (doesCachedTokenFileExist(tokenFilePath)) {
     if (resetToken) {
       writeToken('', tokenFilePath);

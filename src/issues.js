@@ -14,9 +14,7 @@ const getOctokitInstance = (token) => {
     auth: token,
     throttle: {
       onRateLimit: (retryAfter, options, octokit) => {
-        octokit.log.warn(
-          `Request quota exhausted for request ${options.method} ${options.url}`
-        );
+        octokit.log.warn(`Request quota exhausted for request ${options.method} ${options.url}`);
 
         if (options.request.retryCount === 0) {
           // only retries once
@@ -26,11 +24,9 @@ const getOctokitInstance = (token) => {
       },
       onAbuseLimit: (_, options, octokit) => {
         // does not retry, only logs a warning
-        octokit.log.warn(
-          `Abuse detected for request ${options.method} ${options.url}`
-        );
-      }
-    }
+        octokit.log.warn(`Abuse detected for request ${options.method} ${options.url}`);
+      },
+    },
   });
 };
 
@@ -39,9 +35,12 @@ const getIssues = async (dependencies, octokit, labels, maxIssues) => {
     dependencies: { dep: <version string>, dep2: <version string> }
   */
   console.log('gathering issues from packages...');
-  const progressBar = new cliProgress.SingleBar({
-    format: '{bar} {percentage}% | ETA: {eta}s | {message} '
-  }, cliProgress.Presets.rect);
+  const progressBar = new cliProgress.SingleBar(
+    {
+      format: '{bar} {percentage}% | ETA: {eta}s | {message} ',
+    },
+    cliProgress.Presets.rect
+  );
   progressBar.start(Object.keys(dependencies).length, 0);
 
   const packageIssues = {};
@@ -59,16 +58,13 @@ const getIssues = async (dependencies, octokit, labels, maxIssues) => {
       let issues = [];
       let maxReached = false;
       try {
-        for await (const response of octokit.paginate.iterator(
-          octokit.issues.listForRepo,
-          {
-            ...repo,
-            state: 'open',
-            updated: 'updated',
-            direction: 'desc',
-            labels: labels
-          }
-        )) {
+        for await (const response of octokit.paginate.iterator(octokit.issues.listForRepo, {
+          ...repo,
+          state: 'open',
+          updated: 'updated',
+          direction: 'desc',
+          labels: labels,
+        })) {
           issues = issues.concat(response.data);
 
           if (issues.length > maxIssues) {
@@ -84,7 +80,9 @@ const getIssues = async (dependencies, octokit, labels, maxIssues) => {
       if (issues.length > 0) {
         packageIssues[packageName] = {
           issues,
-          moreIssues: maxReached ? `https://github.com/${repo.owner}/${repo.repo}/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3A%22help+wanted%22`: null
+          moreIssues: maxReached
+            ? `https://github.com/${repo.owner}/${repo.repo}/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3A%22help+wanted%22`
+            : null,
         };
       }
     }
@@ -131,7 +129,7 @@ const processIssues = (packageIssues) => {
       console.log(chalk.green.bold(`\n${packageName} (${numIssuesText} issues found):`));
 
       issues.forEach((issue) => {
-        console.log(chalk.cyan(`${issue.title} (${issue.labels.map(lbl => lbl.name).join(',')})`));
+        console.log(chalk.cyan(`${issue.title} (${issue.labels.map((lbl) => lbl.name).join(',')})`));
         console.log(chalk.italic.underline.dim(issue.html_url));
       });
 
@@ -143,9 +141,8 @@ const processIssues = (packageIssues) => {
   }
 };
 
-
 module.exports = {
   getIssues,
   processIssues,
-  getOctokitInstance
+  getOctokitInstance,
 };

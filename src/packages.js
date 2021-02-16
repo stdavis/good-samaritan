@@ -1,13 +1,12 @@
 const readPackage = require('read-pkg');
 const packageInfo = require('package-json');
 
-
-const getCurrentProjectDependencies = async (searchSubDeps=false) => {
+const getCurrentProjectDependencies = async (searchSubDeps = false) => {
   const packageJson = await readPackage();
 
   let dependencies = {
     ...packageJson.dependencies,
-    ...packageJson.devDependencies
+    ...packageJson.devDependencies,
   };
 
   if (searchSubDeps) {
@@ -17,7 +16,7 @@ const getCurrentProjectDependencies = async (searchSubDeps=false) => {
       dependencies = {
         ...subPackageDependencies,
         // preference for root-level dependencies
-        ...dependencies
+        ...dependencies,
       };
     }
   }
@@ -33,7 +32,7 @@ const getPackageInfo = async (packageName, version) => {
   } else {
     const info = await packageInfo(packageName, {
       version: version,
-      fullMetadata: true
+      fullMetadata: true,
     });
 
     PACKAGE_INFO_CACHE[key] = info;
@@ -46,18 +45,18 @@ const getDependencies = async (packageName, version) => {
   const info = await getPackageInfo(packageName, version);
 
   return {
-    ...info.dependencies
+    ...info.dependencies,
   };
 };
 
 const getRepoUrl = async (packageName, version) => {
   const info = await getPackageInfo(packageName, version);
 
-  return (info.repository && info.repository.url) ? info.repository.url : null;
+  return info.repository && info.repository.url ? info.repository.url : null;
 };
 
 module.exports = {
   getCurrentProjectDependencies,
   getRepoUrl,
-  getPackageInfo
+  getPackageInfo,
 };

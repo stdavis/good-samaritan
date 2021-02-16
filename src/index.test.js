@@ -4,20 +4,18 @@ const { getCurrentProjectDependencies } = require('./packages');
 const { getIssues, processIssues } = require('./issues');
 const cmd = require('..');
 
-
 jest.mock('./authentication');
 getToken.mockResolvedValue('token');
 jest.mock('./packages');
 getCurrentProjectDependencies.mockResolvedValue({
   dep1: '^1.1.1',
-  dep2: '^2.2.2'
+  dep2: '^2.2.2',
 });
 jest.mock('./issues');
 getIssues.mockResolvedValue({});
 
 describe('index', () => {
-  beforeEach(() => {
-  });
+  beforeEach(() => {});
 
   test
     .stdout()

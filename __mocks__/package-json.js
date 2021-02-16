@@ -2,42 +2,42 @@ module.exports = jest.fn((packageName) => {
   const packages = {
     dep1: {
       repository: {
-        url: 'https://github.com/stdavis/a-good-module'
+        url: 'https://github.com/stdavis/a-good-module',
       },
       dependencies: {
-        subDep: '1.1.1'
+        subDep: '1.1.1',
       },
       devDependencies: {
-        skip: '0.0.0'
-      }
+        skip: '0.0.0',
+      },
     },
     dep2: {
       repository: {
-        url: 'https://github.com/asdavis/another-good-module'
-      }
+        url: 'https://github.com/asdavis/another-good-module',
+      },
     },
     dep3: {
       repository: {
-        url: 'https://github.com/stdavis/lots-of-issues'
-      }
+        url: 'https://github.com/stdavis/lots-of-issues',
+      },
     },
     devDep1: {},
     devDep2: {
       repository: {},
       dependencies: {
-        subDep2: '2.2.2'
-      }
+        subDep2: '2.2.2',
+      },
     },
     noRepoUrl: {
-      repository: {}
+      repository: {},
     },
     noRepo: {},
     subDep: {
-      repository: {}
+      repository: {},
     },
     subDep2: {
-      repository: {}
-    }
+      repository: {},
+    },
   };
 
   return packages[packageName];
