@@ -8,10 +8,9 @@
   "parserOptions": {
     "ecmaVersion": 2020
   },
-  "extends": ["eslint:recommended"],
+  "extends": ["eslint:recommended", "prettier"],
   "rules": {
     "indent": ["error", 2],
-    "semi": ["error", "always"],
-    "comma-dangle": "error"
+    "semi": ["error", "always"]
   }
 }

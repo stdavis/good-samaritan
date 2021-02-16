@@ -6,5 +6,14 @@
     "octokit",
     "posttest",
     "testrun"
-  ]
+  ],
+  "editor.formatOnSave": true,
+  "editor.rulers": [
+    120
+  ],
+  "eslint.format.enable": false,
+  "prettier.enable": true,
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
 }
