@@ -6,7 +6,7 @@
 [![License](https://img.shields.io/npm/l/good-samaritan.svg)](https://github.com/stdavis/good-samaritan/blob/main/package.json)
 [![Coverage Status](https://coveralls.io/repos/github/stdavis/good-samaritan/badge.svg?branch=main)](https://coveralls.io/github/stdavis/good-samaritan?branch=main)
 
-Help make the world a better place by finding issues in open source dependencies of your NodeJS project that you can help with.
+Help make the world a better place by finding open GitHub issues for open source dependencies of your NodeJS project that you can help with.
 
 Requires a GitHub account for rate limits only ([no scopes are requested](src/authentication.js)).
 
