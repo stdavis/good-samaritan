@@ -1,8 +1,9 @@
-const { test } = require('@oclif/test');
-const getToken = require('./authentication');
-const { getCurrentProjectDependencies } = require('./packages');
-const { getIssues, processIssues } = require('./issues');
-const cmd = require('..');
+import { test } from '@oclif/test';
+import { jest } from '@jest/globals';
+import getToken from './authentication';
+import { getCurrentProjectDependencies } from './packages';
+import { getIssues, processIssues } from './issues';
+import cmd from '..';
 
 jest.mock('./authentication');
 getToken.mockResolvedValue('token');

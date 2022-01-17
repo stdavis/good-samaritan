@@ -1,7 +1,10 @@
-const getToken = require('./authentication');
-const path = require('path');
-const fs = require('fs');
+import getToken from './authentication';
+import path, { dirname } from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const TEST_DATA_FOLDER = path.join(__dirname, '..', 'test_data');
 const EXISTING_TOKEN_FILE = path.join(TEST_DATA_FOLDER, 'mock_token');
 const NON_EXISTING_TOKEN_FILE = path.join(TEST_DATA_FOLDER, 'new_token_file');

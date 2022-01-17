@@ -1,13 +1,13 @@
-const fetch = require('node-fetch');
-const { cli } = require('cli-ux');
-const fs = require('fs');
+import fetch from 'node-fetch';
+import { cli } from 'cli-ux';
+import fs from 'fs';
 
 const jsonHeaders = {
   'Content-Type': 'application/json',
   Accept: 'application/json',
 };
 const OAUTH_CLIENT_ID = '98364a543e873178bcaa';
-const TOKEN_FILE_PATH = `${__dirname}/.token`;
+const TOKEN_FILE_PATH = new URL('.token', import.meta.url);
 const encoding = 'utf8';
 
 const authenticate = async () => {
@@ -104,4 +104,4 @@ const getToken = async (resetToken, tokenFilePath = TOKEN_FILE_PATH) => {
   return token;
 };
 
-module.exports = getToken;
+export default getToken;

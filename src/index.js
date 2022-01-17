@@ -1,9 +1,9 @@
-const { Command, flags } = require('@oclif/command');
-const getToken = require('./authentication');
-const { getCurrentProjectDependencies } = require('./packages');
-const { getOctokitInstance, getIssues, processIssues } = require('./issues');
-const chalk = require('chalk');
-const prettyMilliseconds = require('pretty-ms');
+import { Command, flags } from '@oclif/command';
+import getToken from './authentication.js';
+import { getCurrentProjectDependencies } from './packages.js';
+import { getOctokitInstance, getIssues, processIssues } from './issues.js';
+import chalk from 'chalk';
+import prettyMilliseconds from 'pretty-ms';
 
 class GoodSamaritanCommand extends Command {
   async run() {
@@ -59,4 +59,4 @@ If more than the max is found, a URL is printed that the user can use to see the
   }),
 };
 
-module.exports = GoodSamaritanCommand;
+export default GoodSamaritanCommand;

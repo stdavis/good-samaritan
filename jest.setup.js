@@ -1,4 +1,4 @@
-const server = require('./test_data/mocks/server');
+import server from './test_data/mocks/server';
 
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());

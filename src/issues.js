@@ -1,13 +1,15 @@
-const { Octokit } = require('@octokit/rest');
-const parseGitHubUrl = require('parse-github-url');
-const { getRepoUrl } = require('./packages');
-const cliProgress = require('cli-progress');
-const debug = require('debug')('good-samaritan');
-const chalk = require('chalk');
-const { throttling } = require('@octokit/plugin-throttling');
-const { retry } = require('@octokit/plugin-retry');
+import { Octokit } from '@octokit/rest';
+import parseGitHubUrl from 'parse-github-url';
+import { getRepoUrl } from './packages.js';
+import cliProgress from 'cli-progress';
+import createDebug from 'debug';
+import chalk from 'chalk';
+import { throttling } from '@octokit/plugin-throttling';
+import { retry } from '@octokit/plugin-retry';
 
-const getOctokitInstance = (token) => {
+const debug = createDebug('good-samaritan');
+
+export const getOctokitInstance = (token) => {
   const MyOctokit = Octokit.plugin(throttling, retry);
 
   return new MyOctokit({
@@ -30,7 +32,7 @@ const getOctokitInstance = (token) => {
   });
 };
 
-const getIssues = async (dependencies, octokit, labels, maxIssues) => {
+export const getIssues = async (dependencies, octokit, labels, maxIssues) => {
   /*
     dependencies: { dep: <version string>, dep2: <version string> }
   */
@@ -114,7 +116,7 @@ const getRepoFromPackage = async (packageName, version) => {
   throw error;
 };
 
-const processIssues = (packageIssues) => {
+export const processIssues = (packageIssues) => {
   /*
     packageIssues: { dep: { issues: Issue[], moreIssues: string }, dep2: ... }
   */
@@ -139,10 +141,4 @@ const processIssues = (packageIssues) => {
       }
     }
   }
-};
-
-module.exports = {
-  getIssues,
-  processIssues,
-  getOctokitInstance,
 };

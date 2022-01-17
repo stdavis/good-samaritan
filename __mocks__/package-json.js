@@ -1,4 +1,4 @@
-module.exports = jest.fn((packageName) => {
+export default jest.fn((packageName) => {
   const packages = {
     dep1: {
       repository: {

@@ -1,6 +1,6 @@
-const { rest } = require('msw');
+import { rest } from 'msw';
 
-module.exports = [
+export default [
   rest.post('https://github.com/login/device/code', (request, response, context) => {
     return response(
       context.json({

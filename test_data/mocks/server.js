@@ -1,4 +1,4 @@
-const { setupServer } = require('msw/node');
-const handlers = require('./handlers');
+import { setupServer } from 'msw/node';
+import handlers from './handlers';
 
-module.exports = setupServer(...handlers);
+export default setupServer(...handlers);

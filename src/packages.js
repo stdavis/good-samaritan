@@ -1,7 +1,7 @@
-const readPackage = require('read-pkg');
-const packageInfo = require('package-json');
+import readPackage from 'read-pkg';
+import packageInfo from 'package-json';
 
-const getCurrentProjectDependencies = async (searchSubDeps = false) => {
+export const getCurrentProjectDependencies = async (searchSubDeps = false) => {
   const packageJson = await readPackage();
 
   let dependencies = {
@@ -25,7 +25,7 @@ const getCurrentProjectDependencies = async (searchSubDeps = false) => {
 };
 
 const PACKAGE_INFO_CACHE = {};
-const getPackageInfo = async (packageName, version) => {
+export const getPackageInfo = async (packageName, version) => {
   let key = `${packageName}-${version}`;
   if (PACKAGE_INFO_CACHE[key]) {
     return PACKAGE_INFO_CACHE[key];
@@ -49,14 +49,8 @@ const getDependencies = async (packageName, version) => {
   };
 };
 
-const getRepoUrl = async (packageName, version) => {
+export const getRepoUrl = async (packageName, version) => {
   const info = await getPackageInfo(packageName, version);
 
   return info.repository && info.repository.url ? info.repository.url : null;
-};
-
-module.exports = {
-  getCurrentProjectDependencies,
-  getRepoUrl,
-  getPackageInfo,
 };

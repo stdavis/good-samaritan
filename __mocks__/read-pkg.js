@@ -1,4 +1,4 @@
-module.exports = () => {
+export default () => {
   return {
     dependencies: {
       dep1: '^1.0.1',

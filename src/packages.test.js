@@ -1,5 +1,5 @@
-const { getRepoUrl, getCurrentProjectDependencies, getPackageInfo } = require('./packages');
-const packageInfo = require('package-json');
+import { getRepoUrl, getCurrentProjectDependencies, getPackageInfo } from './packages';
+import packageInfo from 'package-json';
 
 describe('packages', () => {
   describe('getPackageInfo', () => {
