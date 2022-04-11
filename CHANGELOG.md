@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://github.com/stdavis/good-samaritan/compare/v1.5.0...v1.6.0) (2022-04-11)
+
+
+### Features
+
+* add max issues optional parameter ([2ba2a4a](https://github.com/stdavis/good-samaritan/commit/2ba2a4a9781f3b51a80cda8f791af1f7e41b0a5b)), closes [#13](https://github.com/stdavis/good-samaritan/issues/13)
+* add search-sub-deps flag ([e1bc443](https://github.com/stdavis/good-samaritan/commit/e1bc44308850b612b0f30593eda0ef92cf6e81c7))
+* add total processing time metric ([9b15a38](https://github.com/stdavis/good-samaritan/commit/9b15a38b50b998051a826da6aff118b35ed5ae94))
+* implement recommended octokit plugins throttle and retry ([56d9081](https://github.com/stdavis/good-samaritan/commit/56d9081efbc193dcf21ad9b19f44fe5ffaeaf97b))
+
 ## [1.5.0](https://github.com/stdavis/good-samaritan/compare/v1.4.0...v1.5.0) (2021-01-05)
 
 ### Features
