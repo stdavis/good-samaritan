@@ -17,7 +17,7 @@
     "chalk": "^4.1.0",
     "cli-ux": "^5.5.1",
     "node-fetch": "^2.6.1",
-    "package-json": "6.5.0",
+    "package-json": "8.1.0",
     "parse-github-url": "1.0.2",
     "pretty-ms": "^7.0.1",
     "read-pkg": "5.2.0"
