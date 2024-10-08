@@ -1,13 +1,18 @@
-const { getRepoUrl, getCurrentProjectDependencies, getPackageInfo } = require('./packages');
-const packageInfo = require('package-json');
+import packageInfo from 'package-json';
+import { describe, expect, it, vi } from 'vitest';
+import { getCurrentProjectDependencies, getPackageInfo, getRepoUrl } from './packages.js';
 
+vi.mock('package-json');
+vi.mock('read-pkg');
 describe('packages', () => {
   describe('getPackageInfo', () => {
     it('caches calls to packageInfo', async () => {
+      // @ts-expect-error - mocking
       packageInfo.mockClear();
       await getPackageInfo('dep1', '^1.0.1');
       await getPackageInfo('dep1', '^1.0.1');
 
+      // @ts-expect-error - mocking
       expect(packageInfo.mock.calls.length).toBe(1);
     });
   });

@@ -1,4 +1,6 @@
-module.exports = jest.fn((packageName) => {
+import { vi } from 'vitest';
+
+export default vi.fn((packageName) => {
   const packages = {
     dep1: {
       repository: {

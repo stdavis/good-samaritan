@@ -1,13 +1,15 @@
-const { Octokit } = require('@octokit/rest');
-const parseGitHubUrl = require('parse-github-url');
-const { getRepoUrl } = require('./packages');
-const cliProgress = require('cli-progress');
-const debug = require('debug')('good-samaritan');
-const chalk = require('chalk');
-const { throttling } = require('@octokit/plugin-throttling');
-const { retry } = require('@octokit/plugin-retry');
+import { retry } from '@octokit/plugin-retry';
+import { throttling } from '@octokit/plugin-throttling';
+import { Octokit, RestEndpointMethodTypes } from '@octokit/rest';
+import chalk from 'chalk';
+import cliProgress from 'cli-progress';
+import debugModule from 'debug';
+import parseGitHubUrl from 'parse-github-url';
+import { getRepoUrl } from './packages.js';
 
-const getOctokitInstance = (token) => {
+const debug = debugModule('good-samaritan');
+
+export function getOctokitInstance(token: string): Octokit {
   const MyOctokit = Octokit.plugin(throttling, retry);
 
   return new MyOctokit({
@@ -16,21 +18,30 @@ const getOctokitInstance = (token) => {
       onRateLimit: (retryAfter, options, octokit) => {
         octokit.log.warn(`Request quota exhausted for request ${options.method} ${options.url}`);
 
-        if (options.request.retryCount === 0) {
-          // only retries once
-          octokit.log.info(`Retrying after ${retryAfter} seconds!`);
+        // Retry twice after hitting a rate limit error, then give up
+        if (options.request.retryCount <= 2) {
+          console.log(`Retrying after ${retryAfter} seconds!`);
           return true;
         }
       },
-      onAbuseLimit: (_, options, octokit) => {
+      onSecondaryRateLimit: (retryAfter, options, octokit) => {
         // does not retry, only logs a warning
-        octokit.log.warn(`Abuse detected for request ${options.method} ${options.url}`);
+        octokit.log.warn(`Secondary quota detected for request ${options.method} ${options.url}`);
       },
     },
   });
-};
+}
 
-const getIssues = async (dependencies, octokit, labels, maxIssues) => {
+type Issue = RestEndpointMethodTypes['issues']['listForRepo']['response']['data'][0];
+type PackageIssues = { issues: Issue[]; moreIssues: string | null };
+type PackagesWithIssues = Record<string, PackageIssues>;
+
+export async function getIssues(
+  dependencies: Record<string, string>,
+  octokit: Octokit,
+  labels: string,
+  maxIssues: number,
+): Promise<PackagesWithIssues> {
   /*
     dependencies: { dep: <version string>, dep2: <version string> }
   */
@@ -39,11 +50,11 @@ const getIssues = async (dependencies, octokit, labels, maxIssues) => {
     {
       format: '{bar} {percentage}% | ETA: {eta}s | {message} ',
     },
-    cliProgress.Presets.rect
+    cliProgress.Presets.rect,
   );
   progressBar.start(Object.keys(dependencies).length, 0);
 
-  const packageIssues = {};
+  const packageIssues: PackagesWithIssues = {};
   for (const packageName in dependencies) {
     if (Object.prototype.hasOwnProperty.call(dependencies, packageName)) {
       progressBar.increment({ message: `Package: ${packageName}` });
@@ -55,7 +66,7 @@ const getIssues = async (dependencies, octokit, labels, maxIssues) => {
         continue;
       }
 
-      let issues = [];
+      let issues: Issue[] = [];
       let maxReached = false;
       try {
         for await (const response of octokit.paginate.iterator(octokit.issues.listForRepo, {
@@ -91,9 +102,9 @@ const getIssues = async (dependencies, octokit, labels, maxIssues) => {
   progressBar.stop();
 
   return packageIssues;
-};
+}
 
-const getRepoFromPackage = async (packageName, version) => {
+async function getRepoFromPackage(packageName: string, version: string) {
   let repoUrl;
   const error = new Error(`error getting repo from package ${packageName}: ${version}`);
 
@@ -106,18 +117,18 @@ const getRepoFromPackage = async (packageName, version) => {
   }
 
   if (repoUrl) {
-    const { owner, name } = parseGitHubUrl(repoUrl);
+    const parsedUrl = parseGitHubUrl(repoUrl);
+    if (!parsedUrl || parsedUrl.name === null || parsedUrl.owner === null) {
+      throw error;
+    }
 
-    return { owner, repo: name };
+    return { owner: parsedUrl.owner, repo: parsedUrl.name };
   }
 
   throw error;
-};
+}
 
-const processIssues = (packageIssues) => {
-  /*
-    packageIssues: { dep: { issues: Issue[], moreIssues: string }, dep2: ... }
-  */
+export function processIssues(packageIssues: PackagesWithIssues) {
   for (const packageName in packageIssues) {
     if (Object.prototype.hasOwnProperty.call(packageIssues, packageName)) {
       const { issues, moreIssues } = packageIssues[packageName];
@@ -129,7 +140,11 @@ const processIssues = (packageIssues) => {
       console.log(chalk.green.bold(`\n${packageName} (${numIssuesText} issues found):`));
 
       issues.forEach((issue) => {
-        console.log(chalk.cyan(`${issue.title} (${issue.labels.map((lbl) => lbl.name).join(',')})`));
+        console.log(
+          chalk.cyan(
+            `${issue.title} (${issue.labels.map((lbl) => (typeof lbl === 'string' ? lbl : lbl.name)).join(',')})`,
+          ),
+        );
         console.log(chalk.italic.underline.dim(issue.html_url));
       });
 
@@ -139,10 +154,4 @@ const processIssues = (packageIssues) => {
       }
     }
   }
-};
-
-module.exports = {
-  getIssues,
-  processIssues,
-  getOctokitInstance,
-};
+}

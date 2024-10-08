@@ -4,8 +4,11 @@
     "coverallsapp",
     "oclif",
     "octokit",
+    "packagejson",
+    "postpack",
     "posttest",
-    "testrun"
+    "testrun",
+    "tseslint"
   ],
   "editor.formatOnSave": true,
   "editor.rulers": [

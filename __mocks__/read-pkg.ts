@@ -1,4 +1,6 @@
-module.exports = () => {
+import { vi } from 'vitest';
+
+export const readPackage = vi.fn(() => {
   return {
     dependencies: {
       dep1: '^1.0.1',
@@ -9,4 +11,4 @@ module.exports = () => {
       devDep2: '3.0.0',
     },
   };
-};
+});
