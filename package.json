@@ -1,6 +1,6 @@
 {
   "name": "good-samaritan",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "Find open issues from open source dependencies of your project.",
   "keywords": [
     "cli"
