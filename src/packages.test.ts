@@ -1,4 +1,5 @@
 import packageInfo from 'package-json';
+import { readPackage } from 'read-pkg';
 import { describe, expect, it, vi } from 'vitest';
 import { getCurrentProjectDependencies, getPackageInfo, getRepoUrl } from './packages.js';
 
@@ -49,6 +50,13 @@ describe('packages', () => {
       };
 
       expect(await getCurrentProjectDependencies(true)).toEqual(expected);
+    });
+
+    it('should throw custom error if package.json is not found', async () => {
+      (readPackage as vi.Mock).mockRejectedValueOnce({ code: 'ENOENT' });
+      await expect(getCurrentProjectDependencies()).rejects.toThrowError(
+        'No package.json file found in the current directory. Please ensure you are in the correct directory or create a package.json file.',
+      );
     });
   });
 });
