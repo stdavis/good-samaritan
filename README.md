@@ -14,15 +14,15 @@ Only issues that are labeled as "help wanted" are shown by default.
 
 ## Usage
 
-Run `npx good-samaritan` from the root of any project with a `package.json` file.
+Run `pnpm dlx good-samaritan` from the root of any project with a `package.json` file.
 
-Or, alternatively, install this project globally via: `npm install -g good-samaritan` and then run `good-samaritan`.
+Or, alternatively, install this project globally via: `pnpm add -g good-samaritan` and then run `good-samaritan`.
 
 ## Development
 
 ### Local installation
 
-`npm link`
+`pnpm link --global`
 
 Then you should be able to run `good-samaritan` anywhere.
 
@@ -34,5 +34,5 @@ Then you should be able to run `good-samaritan` anywhere.
 
 ### Cutting a new release
 
-1. `npm run release`
-1. `npm publish`
+1. `pnpm run release`
+1. `pnpm publish`

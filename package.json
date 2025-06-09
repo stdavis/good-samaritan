@@ -30,7 +30,7 @@
     "postpack": "shx rm -f oclif.manifest.json",
     "release": "standard-version",
     "test": "vitest",
-    "posttest": "npm run lint"
+    "posttest": "pnpm run lint"
   },
   "oclif": {
     "additionalHelpFlags": [
