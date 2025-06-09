@@ -1,4 +1,4 @@
 .vscode
 coverage
 node_modules
-pnpm-lock.yml
+pnpm-lock.yaml
