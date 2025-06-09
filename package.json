@@ -29,8 +29,7 @@
     "prepack": "oclif manifest && oclif readme",
     "postpack": "shx rm -f oclif.manifest.json",
     "release": "standard-version",
-    "test": "vitest",
-    "posttest": "pnpm run lint"
+    "test": "vitest"
   },
   "oclif": {
     "additionalHelpFlags": [
