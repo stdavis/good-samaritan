@@ -2,7 +2,17 @@ import packageInfo, { FullMetadata, FullVersion } from 'package-json';
 import { readPackage } from 'read-pkg';
 
 export async function getCurrentProjectDependencies(searchSubDeps = false) {
-  const packageJson = await readPackage();
+  let packageJson;
+  try {
+    packageJson = await readPackage();
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
+      throw new Error(
+        'No package.json file found in the current directory. Please ensure you are in the correct directory or create a package.json file.',
+      );
+    }
+    throw error;
+  }
 
   let dependencies = {
     ...packageJson.dependencies,
